@@ -1,28 +1,59 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import HomeScreen from "../screens/HomeScreen"; // Import HomeScreen correctly
+import {
+  Image,
+  TouchableOpacity,
+  View,
+  Text,
+  Modal,
+  StyleSheet,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // Make sure to install @expo/vector-icons
 
-// Define a functional component
-const App = () => {
+import LogoImage from "../assets/logo.png";
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Welcome to My App</Text>
-    </View>
+    <Drawer.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        drawerLabelStyle: {
+          fontSize: 18,
+          fontWeight: "bold",
+        },
+      }}
+    >
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }) => ({
+          headerTitle: () => (
+            <Image
+              source={LogoImage}
+              style={{ width: 90, height: 40, resizeMode: "contain" }}
+            />
+          ),
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+              <Ionicons name="menu" size={24} style={{ marginLeft: 15 }} />
+            </TouchableOpacity>
+          ),
+          headerRight: () => (
+            <Image
+              source={LogoImage}
+              style={{
+                width: 90,
+                height: 40,
+                resizeMode: "contain",
+              }}
+            />
+          ),
+          headerTitle: "", // Remove the default title to only show logo
+        })}
+      />
+    </Drawer.Navigator>
   );
-};
-
-// Define the styles for your components
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f0f0",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-  },
-});
-
-export default App;
+}
