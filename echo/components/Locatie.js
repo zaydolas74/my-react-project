@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const Concert = (props) => {
+const Locatie = (props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -12,7 +12,7 @@ const Concert = (props) => {
     >
       <Image
         source={{
-          uri: props.concertImage?.replace(
+          uri: props.LocatieImage?.replace(
             "https://my-craft-project.ddev.site",
             "http://10.0.2.2:32783"
           ),
@@ -21,11 +21,8 @@ const Concert = (props) => {
       />
       <Text style={styles.title}>{props.title}</Text>
       <View style={styles.inlineContainer}>
-        <Text style={styles.bold}>€{props.price}</Text>
-        <View style={styles.locationContainer}>
-          <Icon name="map-marker" size={16} color="#000" style={styles.icon} />
-          <Text>{props.location}</Text>
-        </View>
+        <Icon name="map-marker" size={16} color="#000" style={styles.icon} />
+        <Text>{props.location}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -42,9 +39,9 @@ const styles = StyleSheet.create({
   },
   inlineContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     margin: 8,
-    marginRight: 16,
+    marginLeft: 16,
   },
   title: {
     fontSize: 18,
@@ -59,6 +56,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     marginBottom: 8,
   },
+
   button: {
     backgroundColor: "#b3d1ff",
     paddingHorizontal: 25,
@@ -84,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Concert;
+export default Locatie;

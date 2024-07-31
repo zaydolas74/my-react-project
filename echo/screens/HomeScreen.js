@@ -5,16 +5,17 @@ import {
   Text,
   ImageBackground,
   FlatList,
-  Image,
   ActivityIndicator,
   Platform,
   ScrollView,
 } from "react-native";
 
 import Concert from "../components/Concert";
+import Locatie from "../components/Locatie";
 
 const HomeScreen = () => {
   const [concerts, setConcerts] = useState([]);
+  const [locaties, setLocaties] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchConcerts = async () => {
@@ -45,8 +46,37 @@ const HomeScreen = () => {
     }
   };
 
+  const fetchLocaties = async () => {
+    try {
+      let url;
+      if (Platform.OS === "android") {
+        url = "http://10.0.2.2:32783/api/locations/";
+      } else {
+        url = "http://my-craft-project.ddev.site/api/locations/";
+      }
+
+      console.log("Fetching from URL:", url);
+
+      const response = await fetch(url, { method: "GET" });
+      console.log("Response Status:", response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      console.log("Response JSON:", json);
+      setLocaties(json.items || []);
+    } catch (error) {
+      console.error("Error fetching concerts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchConcerts();
+    fetchLocaties();
   }, []);
 
   if (loading) {
@@ -66,17 +96,32 @@ const HomeScreen = () => {
         <Text style={styles.title}>Concerten</Text>
         <FlatList
           data={concerts}
+          horizontal={true}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
-              <ScrollView horizontal={true} style={styles.Concertcontainer}>
-                <Concert
-                  title={item.title}
-                  concertImage={item.image}
-                  price={item.price}
-                  location={item.location}
-                />
-              </ScrollView>
+              <Concert
+                title={item.title}
+                concertImage={item.image}
+                price={item.price}
+                location={item.location}
+              />
+            );
+          }}
+        />
+        <Text style={styles.title}>Locaties</Text>
+        <FlatList
+          data={locaties}
+          horizontal={true}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            return (
+              <Locatie
+                title={item.title}
+                LocatieImage={item.image}
+                price={item.price}
+                location={item.address}
+              />
             );
           }}
         />
@@ -101,7 +146,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 24,
     fontWeight: "bold",
-    marginLeft: 8,
     marginTop: 16,
     marginBottom: 16,
   },
