@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Concert from "../components/Concert";
 import {
   StyleSheet,
   View,
@@ -13,32 +12,33 @@ import {
 
 const HomeScreen = () => {
   const [concerts, setConcerts] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true);
 
   const fetchConcerts = async () => {
     try {
       let url;
       if (Platform.OS === "android") {
-        url = "http://10.0.2.2:51773/api/concerts/";
+        url = "http://10.0.2.2:50589/api/concerts/";
       } else {
-        url = "http://my-craft-project.ddev.site/api/concerts/"; // Ensure this endpoint is correct
+        url = "http://localhost:50589/api/concerts/";
       }
 
-      const response = await fetch(url, {
-        method: "GET",
-      });
+      console.log("Fetching from URL:", url);
+
+      const response = await fetch(url, { method: "GET" });
+      console.log("Response Status:", response.status);
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const json = await response.json();
-      console.log("Response JSON:", json); // Log the response to inspect it
-      setConcerts(json.items || []); // Adjust access based on the structure
+      console.log("Response JSON:", json);
+      setConcerts(json.items || []);
     } catch (error) {
       console.error("Error fetching concerts:", error);
     } finally {
-      setLoading(false); // Hide loading indicator after fetch
+      setLoading(false);
     }
   };
 
@@ -64,26 +64,24 @@ const HomeScreen = () => {
         <FlatList
           data={concerts}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
-            if (Platform.OS == "android") {
-              item.image = item.image.replace(
-                "sport.ddev.site",
-                "10.0.2.2:55001"
-              );
-            }
-            return (
-              <Concert
-                id={item.id}
-                title={item.title}
-                concertImage={item.image}
-                price={item.price}
+          renderItem={({ item }) => (
+            <View style={styles.concertContainer}>
+              <Image
+                source={{
+                  uri: item.image?.replace(
+                    "https://my-craft-project.ddev.site",
+                    "http://10.0.2.2:50589"
+                  ),
+                }}
+                style={styles.image}
               />
-            );
-          }}
+
+              <Text style={styles.concertTitle}>{item.title}</Text>
+              <Text style={styles.concertLocation}>{item.location}</Text>
+              <Text style={styles.concertPrice}>€{item.price}</Text>
+            </View>
+          )}
         />
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.title}>andere moeten hier onder komen</Text>
       </View>
     </ImageBackground>
   );
@@ -125,6 +123,7 @@ const styles = StyleSheet.create({
   concertTitle: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#333",
   },
   concertLocation: {
     fontSize: 16,
