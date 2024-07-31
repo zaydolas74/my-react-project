@@ -8,7 +8,10 @@ import {
   Image,
   ActivityIndicator,
   Platform,
+  ScrollView,
 } from "react-native";
+
+import Concert from "../components/Concert";
 
 const HomeScreen = () => {
   const [concerts, setConcerts] = useState([]);
@@ -18,9 +21,9 @@ const HomeScreen = () => {
     try {
       let url;
       if (Platform.OS === "android") {
-        url = "http://10.0.2.2:50589/api/concerts/";
+        url = "http://10.0.2.2:32783/api/concerts/";
       } else {
-        url = "http://localhost:50589/api/concerts/";
+        url = "http://my-craft-project.ddev.site/api/concerts/";
       }
 
       console.log("Fetching from URL:", url);
@@ -59,30 +62,25 @@ const HomeScreen = () => {
       source={require("../assets/background.jpg")}
       style={styles.background}
     >
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.title}>Concerten</Text>
         <FlatList
           data={concerts}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.concertContainer}>
-              <Image
-                source={{
-                  uri: item.image?.replace(
-                    "https://my-craft-project.ddev.site",
-                    "http://10.0.2.2:50589"
-                  ),
-                }}
-                style={styles.image}
-              />
-
-              <Text style={styles.concertTitle}>{item.title}</Text>
-              <Text style={styles.concertLocation}>{item.location}</Text>
-              <Text style={styles.concertPrice}>€{item.price}</Text>
-            </View>
-          )}
+          renderItem={({ item }) => {
+            return (
+              <ScrollView horizontal={true} style={styles.Concertcontainer}>
+                <Concert
+                  title={item.title}
+                  concertImage={item.image}
+                  price={item.price}
+                  location={item.location}
+                />
+              </ScrollView>
+            );
+          }}
         />
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -93,45 +91,23 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 20,
+    flex: 1,
+    width: "100%",
+    marginTop: 0,
   },
   title: {
-    fontSize: 35,
-    fontWeight: "bold",
     color: "#fff",
-    marginBottom: 20,
-  },
-  concertContainer: {
-    flexDirection: "row",
-    marginBottom: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    overflow: "hidden",
-  },
-  image: {
-    width: 100,
-    height: 100,
-  },
-  infoContainer: {
-    padding: 10,
-    flex: 1,
-  },
-  concertTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    color: "#333",
+    marginLeft: 8,
+    marginTop: 16,
+    marginBottom: 16,
   },
-  concertLocation: {
-    fontSize: 16,
-    color: "#555",
-  },
-  concertPrice: {
-    fontSize: 16,
-    color: "#333",
+  Concertcontainer: {
+    marginLeft: 8,
+    marginRight: 8,
   },
 });
 
