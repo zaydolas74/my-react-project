@@ -12,10 +12,12 @@ import {
 
 import Concert from "../components/Concert";
 import Locatie from "../components/Locatie";
+import Artiest from "../components/Artiest";
 
 const HomeScreen = () => {
   const [concerts, setConcerts] = useState([]);
   const [locaties, setLocaties] = useState([]);
+  const [artiesten, setArtiesten] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchConcerts = async () => {
@@ -74,9 +76,38 @@ const HomeScreen = () => {
     }
   };
 
+  const fetchArtiesten = async () => {
+    try {
+      let url;
+      if (Platform.OS === "android") {
+        url = "http://10.0.2.2:32783/api/artists/";
+      } else {
+        url = "http://my-craft-project.ddev.site/api/artists/";
+      }
+
+      console.log("Fetching from URL:", url);
+
+      const response = await fetch(url, { method: "GET" });
+      console.log("Response Status:", response.status);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      console.log("Response JSON:", json);
+      setArtiesten(json.items || []);
+    } catch (error) {
+      console.error("Error fetching concerts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchConcerts();
     fetchLocaties();
+    fetchArtiesten();
   }, []);
 
   if (loading) {
@@ -125,6 +156,15 @@ const HomeScreen = () => {
             );
           }}
         />
+        <Text style={styles.title}>Artiesten</Text>
+        <FlatList
+          data={artiesten}
+          horizontal={true}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => {
+            return <Artiest title={item.title} ArtiestImage={item.image} />;
+          }}
+        />
       </ScrollView>
     </ImageBackground>
   );
@@ -141,6 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     marginTop: 0,
+    marginBottom: 30,
   },
   title: {
     color: "#fff",
