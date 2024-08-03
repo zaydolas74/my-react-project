@@ -185,7 +185,20 @@ const HomeScreen = ({ navigation }) => {
           horizontal={true}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
-            return <Artiest title={item.title} ArtiestImage={item.image} />;
+            return (
+              <Artiest
+                title={item.title}
+                ArtiestImage={item.image}
+                onPress={() =>
+                  navigation.navigate("ArtiestDetailScreen", {
+                    id: item.id,
+                    title: item.name,
+                    image: item.image,
+                    description: item.description,
+                  })
+                }
+              />
+            );
           }}
         />
       </ScrollView>

@@ -1,25 +1,53 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import HomeScreen from "../screens/HomeScreen"; // Import HomeScreen correctly
-import {
-  Image,
-  TouchableOpacity,
-  View,
-  Text,
-  Modal,
-  StyleSheet,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Make sure to install @expo/vector-icons
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from "../screens/HomeScreen";
+import ConcertDetailScreen from "../screens/ConcertDetailScreen";
+import LocatieDetailScreen from "../screens/LocatieDetailScreen";
+import ArtiestDetailScreen from "../screens/ArtiestDetailScreen";
+import { Image, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 import LogoImage from "../assets/logo.png";
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ConcertDetailScreen"
+        component={ConcertDetailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="LocatieDetailScreen"
+        component={LocatieDetailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ArtiestDetailScreen"
+        component={ArtiestDetailScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeStack"
       screenOptions={{
+        headerStyle: {
+          backgroundColor: "#fff",
+        },
         drawerLabelStyle: {
           fontSize: 18,
           fontWeight: "bold",
@@ -28,7 +56,7 @@ export default function App() {
     >
       <Drawer.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStack}
         options={({ navigation }) => ({
           headerTitle: () => (
             <Image
@@ -51,7 +79,7 @@ export default function App() {
               }}
             />
           ),
-          headerTitle: "", // Remove the default title to only show logo
+          headerTitle: "",
         })}
       />
     </Drawer.Navigator>
