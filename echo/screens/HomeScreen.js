@@ -14,7 +14,7 @@ import Concert from "../components/Concert";
 import Locatie from "../components/Locatie";
 import Artiest from "../components/Artiest";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [concerts, setConcerts] = useState([]);
   const [locaties, setLocaties] = useState([]);
   const [artiesten, setArtiesten] = useState([]);
@@ -136,6 +136,20 @@ const HomeScreen = () => {
                 concertImage={item.image}
                 price={item.price}
                 location={item.location}
+                date={item.date} // Ensure this is available
+                artists={item.artists} // Ensure this is available
+                navigation={navigation}
+                onPress={() =>
+                  navigation.navigate("ConcertDetailScreen", {
+                    id: item.id,
+                    title: item.title,
+                    price: item.price,
+                    location: item.location,
+                    image: item.image,
+                    description: item.description,
+                    artists: item.artists,
+                  })
+                }
               />
             );
           }}
@@ -149,9 +163,18 @@ const HomeScreen = () => {
             return (
               <Locatie
                 title={item.title}
+                name={item.name}
                 LocatieImage={item.image}
-                price={item.price}
                 location={item.address}
+                onPress={() =>
+                  navigation.navigate("LocatieDetailScreen", {
+                    id: item.id,
+                    title: item.name,
+                    location: item.address,
+                    image: item.image,
+                    description: item.description,
+                  })
+                }
               />
             );
           }}
