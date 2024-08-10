@@ -5,6 +5,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ConcertDetailScreen from "../screens/ConcertDetailScreen";
 import LocatieDetailScreen from "../screens/LocatieDetailScreen";
 import ArtiestDetailScreen from "../screens/ArtiestDetailScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
 import { Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -17,7 +18,7 @@ function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{ headerShown: false }}
       />
@@ -81,6 +82,13 @@ export default function App() {
           ),
           headerTitle: "",
         })}
+      />
+      <Drawer.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{
+          drawerLabel: "Favorites",
+        }}
       />
     </Drawer.Navigator>
   );
