@@ -5,10 +5,10 @@ import HomeScreen from "../screens/HomeScreen";
 import ConcertDetailScreen from "../screens/ConcertDetailScreen";
 import LocatieDetailScreen from "../screens/LocatieDetailScreen";
 import ArtiestDetailScreen from "../screens/ArtiestDetailScreen";
+import CategoryScreen from "../screens/CategoryScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import { Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
 import LogoImage from "../assets/logo.png";
 
 const Drawer = createDrawerNavigator();
@@ -35,6 +35,11 @@ function HomeStack() {
       <Stack.Screen
         name="ArtiestDetailScreen"
         component={ArtiestDetailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CategoryScreen"
+        component={CategoryScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -88,6 +93,30 @@ export default function App() {
         component={FavoritesScreen}
         options={{
           drawerLabel: "Favorites",
+        }}
+      />
+      <Drawer.Screen
+        name="Concerten"
+        component={CategoryScreen}
+        initialParams={{ type: "Concerten" }}
+        options={{
+          drawerLabel: "Concerten",
+        }}
+      />
+      <Drawer.Screen
+        name="Locaties"
+        component={CategoryScreen}
+        initialParams={{ type: "Locaties" }}
+        options={{
+          drawerLabel: "Locaties",
+        }}
+      />
+      <Drawer.Screen
+        name="Artiesten"
+        component={CategoryScreen}
+        initialParams={{ type: "Artiesten" }}
+        options={{
+          drawerLabel: "Artiesten",
         }}
       />
     </Drawer.Navigator>
