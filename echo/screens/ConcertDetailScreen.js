@@ -37,10 +37,8 @@ const ConcertDetailScreen = ({ route, navigation }) => {
       let updatedFavorites;
 
       if (isFavorite) {
-        // Remove from favorites
         updatedFavorites = favorites.filter((item) => item.id !== id);
       } else {
-        // Add to favorites
         updatedFavorites = [
           ...favorites,
           { id, title, description, image, price, date, location, artists },

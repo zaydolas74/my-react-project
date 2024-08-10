@@ -20,7 +20,7 @@ const ArtiestDetailScreen = ({ route, navigation }) => {
       try {
         const storedFavorites = await AsyncStorage.getItem("favorites");
         const favorites = storedFavorites ? JSON.parse(storedFavorites) : [];
-        console.log("Fetched favorites:", favorites); // Debug: Log fetched favorites
+        console.log("Fetched favorites:", favorites);
         setIsFavorite(favorites.some((item) => item.id === id));
       } catch (error) {
         console.error("Error fetching favorites:", error);
@@ -37,14 +37,12 @@ const ArtiestDetailScreen = ({ route, navigation }) => {
       let updatedFavorites;
 
       if (isFavorite) {
-        // Remove from favorites
         updatedFavorites = favorites.filter((item) => item.id !== id);
       } else {
-        // Add to favorites
         updatedFavorites = [...favorites, { id, title, description, image }];
       }
 
-      console.log("Updated favorites:", updatedFavorites); // Debug: Log updated favorites
+      console.log("Updated favorites:", updatedFavorites);
 
       await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
       setIsFavorite(!isFavorite);
