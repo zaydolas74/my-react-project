@@ -12,19 +12,17 @@ import { useFocusEffect } from "@react-navigation/native";
 const FavoritesScreen = () => {
   const [favorites, setFavorites] = useState([]);
 
-  // Function to fetch favorites from AsyncStorage
   const fetchFavorites = async () => {
     try {
       const storedFavorites = await AsyncStorage.getItem("favorites");
       const favoritesList = storedFavorites ? JSON.parse(storedFavorites) : [];
-      console.log("Fetched favorites:", favoritesList); // Debug: Log fetched favorites
+      console.log("Fetched favorites:", favoritesList);
       setFavorites(favoritesList);
     } catch (error) {
       console.error("Error fetching favorites:", error);
     }
   };
 
-  // Use useFocusEffect to refresh favorites when the screen is focused
   useFocusEffect(
     useCallback(() => {
       fetchFavorites();
@@ -49,7 +47,7 @@ const FavoritesScreen = () => {
       ) : (
         <FlatList
           data={favorites}
-          keyExtractor={(item) => item.id.toString()} // Ensure id is a string
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.favoriteItem}>
               <Text style={styles.itemText}>{item.title}</Text>
