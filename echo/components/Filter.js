@@ -18,7 +18,7 @@ const Filter = ({ onSortChange }) => {
           selectedValue={sortValue}
           onValueChange={(itemValue) => handleSortChange(itemValue)}
         >
-          <Picker.Item label="Sort by" value="0" />
+          <Picker.Item label="Sorteer op" value="0" />
           <Picker.Item label="A-Z" value="1" />
           <Picker.Item label="Z-A" value="2" />
         </Picker>
